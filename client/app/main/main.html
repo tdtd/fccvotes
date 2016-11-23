@@ -1,0 +1,87 @@
+<div class="jumbotron asanoha">
+  <div class="container text-center">
+    <h1>Vote App</h1>
+  </div>
+</div>
+
+<div class="container">
+  
+    <div class="title">
+      <h1> New Poll 
+        <span ng-click="mCtrl.toggleForm()">
+          <i class="fa fa-minus-square-o" aria-hidden="true" ng-show="mCtrl.formActive"></i>
+          <i class="fa fa-plus-square-o" aria-hidden="true" ng-show="!mCtrl.formActive"></i>
+        </span>
+      </h1>
+    </div>
+  
+  <div ng-show="mCtrl.formActive">    
+    <form ng-submit="mCtrl.postPoll()">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="New Poll Question" ng-model="mCtrl.newPoll.question" required>
+      </div>
+      
+      <div class="form-group">
+        <h2>Options</h2>
+      </div>
+      
+      <div class="form-group options col-sm-12" ng-repeat="option in mCtrl.newPoll.options track by $index">
+        <div class="col-sm-8 col-md-8">
+          <input type="text" class="form-control"  ng-model="mCtrl.newPoll.options[$index].text" placeholder="{{'Choice '+($index+1)}}" required>
+        </div>
+        <div class="col-sm-3 col-md-3">
+          <color-picker ng-model="mCtrl.newPoll.options[$index].color" options="{alpha:true, format:'hex', clear: {show: true, class:'btn-small'}}" placeholder="Optional Color Choice"></color-picker>
+        </div>
+        <div class="col-sm-1 col-md-1 text-right">
+          <button class="btn btn-danger" ng-click="mCtrl.newPoll.removeOption($index)" class="span-button"><i class="fa fa-times" aria-hidden="true"></i></button>
+        </div>
+      </div>
+      
+      <div class="sub-group col-sm-12">
+        <button type="button" class="btn btn-warning" ng-click="mCtrl.newPoll.addOption()">Add Option</button>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </div>
+      
+    </form>
+  </div>
+  
+  <div ng-hide="mCtrl.found" class="text-center">
+    Loading Polls
+    <div class="loader loader--style1" title="0">
+    <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+         width="40px" height="40px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+    <path opacity="0.2" fill="#000" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+                                       s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+                                       c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"/>
+    <path fill="#000" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+                         C22.32,8.481,24.301,9.057,26.013,10.047z">
+      <animateTransform attributeType="xml"
+                        attributeName="transform"
+                        type="rotate"
+                        from="0 20 20"
+                        to="360 20 20"
+                        dur="0.5s"
+                        repeatCount="indefinite"/>
+      </path>
+    </svg>
+    </div>
+  </div>
+  
+  <div ng-show="mCtrl.found" ng-hide="mCtrl.formActive">
+    <div class="col-md-12">
+      <ul class="list-group">
+        <a class="list-group-item text-center" ng-repeat="poll in mCtrl.polls" href="/poll/{{poll._id}}">
+          {{poll.question}}
+        </a>
+      </ul>
+    </div>
+    <div class="col-md-12">
+      <span class="col-md-6 text-left">
+        <button class="btn btn-default" ng-disabled="mCtrl.page <= 0" ng-click="mCtrl.deltaPage(-1)"> <i class="fa fa-arrow-left" aria-hidden="true"></i> </button>
+      </span>
+      <span class="col-md-6 text-right">
+        <button class="btn btn-default" ng-disabled="mCtrl.isMaxPage()" ng-click="mCtrl.deltaPage(1)"> <i class="fa fa-arrow-right" aria-hidden="true"></i> </button>
+      </span>
+    </div>
+  </div>
+</div>
